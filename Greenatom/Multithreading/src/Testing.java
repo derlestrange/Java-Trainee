@@ -1,7 +1,7 @@
 public class Testing implements Runnable {
     @Override
     public void run() {
-        for(;;){
+        for (; ; ) {
             try {
                 System.out.println("5000");
                 Thread.sleep(5000);
