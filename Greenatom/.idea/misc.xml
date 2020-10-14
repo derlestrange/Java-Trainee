@@ -5,6 +5,7 @@
       <list>
         <option value="$PROJECT_DIR$/InputOutput/pom.xml" />
         <option value="$PROJECT_DIR$/WorkWithDB/pom.xml" />
+        <option value="$PROJECT_DIR$/Hibernate/pom.xml" />
       </list>
     </option>
   </component>

@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="WorkWithDB" />
+        <module name="Hibernate" />
         <module name="InputOutput" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="Hibernate" target="8" />
       <module name="InputOutput" target="1.5" />
       <module name="WorkWithDB" target="8" />
     </bytecodeTargetLevel>
