@@ -1,0 +1,59 @@
+SELECT * FROM sportsman
+SELECT competition_name, world_record FROM competition
+SELECT sportsman_name FROM sportsman WHERE year_of_birth = 1990
+SELECT competition_name, world_record FROM competition WHERE set_date IN ('05-12-2010', '05-15-2010')
+SELECT hold_date FROM result WHERE city = 'Москва' AND  result = 10
+SELECT sportsman_name FROM sportsman WHERE personal_record != 25
+SELECT competition_name FROM  competition WHERE world_record = 15 AND set_date != '02-12-2015'
+SELECT hold_date FROM result WHERE city LIKE 'M%'
+
+SELECT result FROM result WHERE city = 'Москва' ORDER BY result DESC LIMIT 1
+SELECT year_of_birth FROM sportsman WHERE rank = 1 ORDER BY year_of_birth DESC LIMIT 1
+SELECT sportsman_name FROM sportsman WHERE personal_record IN (SELECT hold_date FROM result WHERE hold_date = '04-12-2014')
+
+SELECT s.sportsman_name, AVG(r.result) FROM sportsman AS s JOIN result AS r ON s.sportsman_id = r.sportsman_id GROUP BY s.sportsman_name
+SELECT sportsman_name FROM sportsman WHERE rank < (SELECT AVG(rank) FROM sportsman WHERE year_of_birth = 2000)
+
+SELECT COUNT(s.sportsman_name) FROM sportsman AS s JOIN result AS r ON r.sportsman_id = s.sportsman_id JOIN competition AS
+cmp ON cmp.competition_id = r.competition_id WHERE s.sportsman_name LIKE '%Иванов' AND cmp.competition_name LIKE '%Региональные'
+
+SELECT DISTINCT r.city FROM result AS r JOIN competition AS cmp ON cmp.world_record = r.result
+SELECT MAX(s.rank) FROM sportsman AS s JOIN result AS r ON r.sportsman_id = s.sportsman_id JOIN competition AS cmp ON cmp.world_record = r.result
+
+SELECT competition_name FROM (SELECT cmp.competition_name, COUNT (r.city) FROM result AS r JOIN competition as cmp ON cmp.world_record = r.result
+GROUP BY cmp.competition_name ORDER BY count DESC LIMIT 1) AS subquery
+
+DELETE FROM result USING sportsman WHERE sportsman.sportsman_id = result.sportsman_id AND city = 'Москва' AND year_of_birth >= 1980
+DELETE FROM competition USING result WHERE competition.competition_id = result.competition_id AND result = 20
+DELETE FROM sportsman.sportsman_id = result.sportsman_id AND year_of_birth = 2001
+
+------------------------------------------------------------------------------------------------------------------------
+
+1)
+CREATE PROCEDURE test(a integer, b integer)
+LANGUAGE SQL
+AS $$
+INSERT INTO tbl VALUES (a);
+INSERT INTO tbl VALUES (b);
+$$;
+CALL sportsman_id(1, 2);
+
+
+2)
+CREATE OR REPLACE FUNCTION my_funk()
+  RETURNS trigger AS
+$$
+BEGIN
+         INSERT INTO sportsman(rank, country)
+         VALUES(NEW.rank, NEW.country);
+    RETURN NEW;
+END;
+$$
+LANGUAGE 'plpgsql';
+
+3)
+CREATE TRIGGER my_trigger
+  AFTER INSERT
+  ON competition
+  FOR EACH ROW
+  EXECUTE PROCEDURE test();
