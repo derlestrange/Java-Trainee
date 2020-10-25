@@ -11,6 +11,7 @@
       <module fileurl="file://$PROJECT_DIR$/Reflection/Reflection.iml" filepath="$PROJECT_DIR$/Reflection/Reflection.iml" />
       <module fileurl="file://$PROJECT_DIR$/Serialization/Serialization.iml" filepath="$PROJECT_DIR$/Serialization/Serialization.iml" />
       <module fileurl="file://$PROJECT_DIR$/StreamApi/StreamApi.iml" filepath="$PROJECT_DIR$/StreamApi/StreamApi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Switter/Switter.iml" filepath="$PROJECT_DIR$/Switter/Switter.iml" />
       <module fileurl="file://$PROJECT_DIR$/WorkWithDB/WorkWithDB.iml" filepath="$PROJECT_DIR$/WorkWithDB/WorkWithDB.iml" />
     </modules>
   </component>
