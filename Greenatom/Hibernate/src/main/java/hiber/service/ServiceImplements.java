@@ -2,6 +2,7 @@ package hiber.service;
 
 import hiber.dao.HumanDaoImplements;
 import hiber.dao.IDaoHibernate;
+import hiber.entity.Human;
 import org.hibernate.SessionFactory;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public class ServiceImplements<T> implements IService<T> {
 
     private IDaoHibernate<T> dao;
     private Class<T> cl;
+    private HumanDaoImplements humanDaoImplements = new HumanDaoImplements();
 
 
     public ServiceImplements(Class<T> cl, SessionFactory sessionFactory) {
@@ -19,8 +21,9 @@ public class ServiceImplements<T> implements IService<T> {
     }
 
     @Override
-    public T get(Class<T> cl, Integer id) {
-        return (T) dao.get(cl, id);
+    public Human get(Integer id) {
+//        System.out.println(id);
+        return humanDaoImplements.get(id);
     }
 
     @Override

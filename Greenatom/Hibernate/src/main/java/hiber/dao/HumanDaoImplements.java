@@ -3,11 +3,15 @@ package hiber.dao;
 import java.util.List;
 import java.util.Map;
 
+import hiber.entity.Human;
+import hiber.util.HibernateUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 public class HumanDaoImplements<T> implements IDaoHibernate<T> {
+
+    public HumanDaoImplements (){}
 
     private SessionFactory sessionFactory;
 
@@ -18,18 +22,14 @@ public class HumanDaoImplements<T> implements IDaoHibernate<T> {
     }
 
     @Override
-    public T get(Class<T> cl, Integer id) {
-        Session session = sessionFactory.getCurrentSession();
-        session.beginTransaction();
-        @SuppressWarnings("unchecked")
-        T element = (T) session.get(cl, id);
-        session.getTransaction().commit();
-        return element;
+    public Human get(Integer id) {
+        System.out.println(id);
+        return HibernateUtil.getSessionFactory().openSession().get(Human.class, id);
     }
 
     @Override
     public T save(T object) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         session.save(object);
         session.getTransaction().commit();
@@ -38,7 +38,7 @@ public class HumanDaoImplements<T> implements IDaoHibernate<T> {
 
     @Override
     public void update(T object) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         session.update(object);
         session.getTransaction().commit();
@@ -46,7 +46,7 @@ public class HumanDaoImplements<T> implements IDaoHibernate<T> {
 
     @Override
     public void delete(T object) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
         session.beginTransaction();
         session.delete(object);
         session.getTransaction().commit();
@@ -55,7 +55,7 @@ public class HumanDaoImplements<T> implements IDaoHibernate<T> {
     @SuppressWarnings("unchecked")
     @Override
     public List<T> getAll(String hsql, Map<String, Object> params) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = sessionFactory.openSession();
         session.beginTransaction();
         Query query = session.createQuery(hsql);
         if (params != null) {

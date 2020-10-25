@@ -1,11 +1,13 @@
 package hiber.dao;
 
+import hiber.entity.Human;
+
 import java.util.List;
 import java.util.Map;
 
 public interface IDaoHibernate<T> {
 
-    public T get(Class<T> cl, Integer id);
+    public Human get(Integer id);
 
     public T save(T object);
 
