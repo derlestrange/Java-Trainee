@@ -15,7 +15,7 @@
     <bytecodeTargetLevel>
       <module name="Hibernate" target="8" />
       <module name="InputOutput" target="1.5" />
-      <module name="Switter" target="1.5" />
+      <module name="Switter" target="1.8" />
       <module name="WorkWithDB" target="8" />
     </bytecodeTargetLevel>
   </component>
