@@ -2,7 +2,9 @@ package example.sarafan.controller;
 
 import example.sarafan.domain.Comment;
 import example.sarafan.domain.User;
+import example.sarafan.domain.Views;
 import example.sarafan.service.CommentService;
+import org.codehaus.jackson.map.annotate.JsonView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +23,7 @@ public class CommentController {
     }
 
     @PostMapping
+    @JsonView(Views.FullComment.class)
     public Comment creae(
             @RequestBody Comment comment,
             @AuthenticationPrincipal User user
