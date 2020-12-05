@@ -1,7 +1,11 @@
 package example.sarafan.controller;
 
-import example.sarafan.repo.MessageRepo;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import example.sarafan.domain.User;
+import example.sarafan.domain.Views;
+import example.sarafan.repo.MessageRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,18 +24,26 @@ public class MainController {
     @Value("${spring.profiles.active}")
     private String profile;
 
+    private final ObjectWriter writer;
+    private String value;
+
     @Autowired
-    public MainController(MessageRepo messageRepo) {
+    public MainController(MessageRepo messageRepo, ObjectMapper mapper) {
         this.messageRepo = messageRepo;
+
+        this.writer = mapper
+                .setConfig(mapper.getSerializationConfig())
+                .writerWithView(Views.FullMessage.class);
     }
 
     @GetMapping
-    public String main(Model model, @AuthenticationPrincipal User user) {
+    public String main(Model model, @AuthenticationPrincipal User user) throws JsonProcessingException {
         HashMap<Object, Object> data = new HashMap<>();
 
         if (user != null) {
             data.put("profile", user);
-            data.put("messages", messageRepo.findAll());
+            value = writer.writeValueAsString(messageRepo.findAll());
+            model.addAttribute("messages", value);
         }
 
         model.addAttribute("frontendData", data);
