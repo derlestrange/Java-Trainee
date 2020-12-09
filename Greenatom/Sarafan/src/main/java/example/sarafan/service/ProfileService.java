@@ -1,30 +1,53 @@
 package example.sarafan.service;
 
 import example.sarafan.domain.User;
+import example.sarafan.domain.UserSubscription;
 import example.sarafan.repo.UserDetailsRepo;
+import example.sarafan.repo.UserSubscriptionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProfileService {
     private final UserDetailsRepo userDetailsRepo;
+    private final UserSubscriptionRepo userSubscriptionRepo;
 
     @Autowired
-    public ProfileService(UserDetailsRepo userDetailsRepo) {
+    public ProfileService(UserDetailsRepo userDetailsRepo,
+                          UserSubscriptionRepo userSubscriptionRepo) {
         this.userDetailsRepo = userDetailsRepo;
+        this.userSubscriptionRepo = userSubscriptionRepo;
     }
 
     public User changeSubscription(User channel, User subscriber) {
-        Set<User> subscribers = channel.getSubscribers();
+        List<UserSubscription> subcriptions = channel.getSubscribers()
+                .stream()
+                .filter(subscription ->
+                        subscription.getSubscriber().equals(subscriber)
+                )
+                .collect(Collectors.toList());
 
-        if (subscribers.contains(subscriber)) {
-            subscribers.remove(subscriber);
+        if (subcriptions.isEmpty()) {
+            UserSubscription subscription = new UserSubscription(channel, subscriber);
+            channel.getSubscribers().add(subscription);
         } else {
-            subscribers.add(subscriber);
+            channel.getSubscribers().removeAll(subcriptions);
         }
 
         return userDetailsRepo.save(channel);
+    }
+
+    public List<UserSubscription> getSubscribers(User channel) {
+        return userSubscriptionRepo.findByChannel(channel);
+    }
+
+    public UserSubscription changeSubscriptionStatus(User channel, User subscriber) {
+        UserSubscription subscription =
+                userSubscriptionRepo.findByChannelAndSubscriber(channel, subscriber);
+        subscription.setActive(!subscription.isActive());
+        return userSubscriptionRepo.save(subscription);
     }
 }

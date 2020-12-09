@@ -25,9 +25,9 @@ import java.io.IOException;
 @RestController
 @RequestMapping("message")
 public class MessageController {
-    private final MessageService messageService;
-
     public static final int MESSAGES_PER_PAGE = 3;
+
+    private final MessageService messageService;
 
     @Autowired
     public MessageController(MessageService messageService) {
@@ -37,11 +37,10 @@ public class MessageController {
     @GetMapping
     @JsonView(Views.FullMessage.class)
     public MessagePageDto list(
-            @PageableDefault(size = 3,
-                    sort = {"id"},
-                    direction = Sort.Direction.DESC) Pageable pageable
+            @AuthenticationPrincipal User user,
+            @PageableDefault(size = MESSAGES_PER_PAGE, sort = { "id" }, direction = Sort.Direction.DESC) Pageable pageable
     ) {
-        return messageService.findAll(pageable);
+        return messageService.findForUser(pageable, user);
     }
 
     @GetMapping("{id}")
@@ -51,8 +50,10 @@ public class MessageController {
     }
 
     @PostMapping
-    public Message create(@RequestBody Message message,
-                          @AuthenticationPrincipal User user) throws IOException {
+    public Message create(
+            @RequestBody Message message,
+            @AuthenticationPrincipal User user
+    ) throws IOException {
         return messageService.create(message, user);
     }
 
