@@ -1,6 +1,8 @@
 package com.example.springsecurity.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -21,26 +23,26 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "usr")
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
 public class User {
     @Id
-    @Column(columnDefinition = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "name")
-    @NotBlank
     private String name;
 
     @Column(name = "surname")
-    @NotBlank
     private String surname;
 
     @Column(name = "company")
@@ -54,20 +56,18 @@ public class User {
     private LocalDateTime time;
 
     @Column(name = "password")
-    @NotBlank
     private String password;
 
     @Column(name = "email")
-    @NotBlank
     private String email;
+//
+//    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+//    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+//    @Enumerated(EnumType.STRING)
+//    private Set<Role> roles;
 
-    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
-    @Enumerated(EnumType.STRING)
-    private Set<Role> roles;
-
-    public User(@NotBlank String name, @NotBlank String surname, String company, int salary,
-                LocalDateTime time, @NotBlank String password, @NotBlank String email) {
+    public User(String name, String surname, String company, int salary,
+                LocalDateTime time, String password, String email) {
         this.name = name;
         this.surname = surname;
         this.company = company;

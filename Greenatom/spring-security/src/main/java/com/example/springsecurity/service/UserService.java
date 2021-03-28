@@ -1,17 +1,19 @@
 package com.example.springsecurity.service;
 
+import com.example.springsecurity.dto.UserDto;
 import com.example.springsecurity.model.User;
 
 import java.util.List;
 
 public interface UserService {
-    public List<User> getAllUsers();
+    public List<UserDto> getAllUsers();
 
-    public User saveEmployee(User user);
+    public UserDto saveEmployee(UserDto userDto);
 
-    public User updateUser(User user);
+    public UserDto updateUser(UserDto userDto);
 
-    public User getUser(Long id);
+    public UserDto getUser(Long id);
 
     public void deleteUser(Long id);
+
 }
